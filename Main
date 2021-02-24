@@ -1,0 +1,15 @@
+import controllers.MedicineController;
+import data.Database;
+import data.interfaces.IDatabase;
+import repositories.MedicineRepository;
+import repositories.interfaces.IMedicineRrepository;
+
+public class Main {
+
+    public static void main(String[] args) {
+        IDatabase dbManager = new DBManager();
+        IMedicineRrepository medicineRepository = new MedicineRepository(dbManager);
+        MedicineController medicineController = new MedicineController(medicineRepository);
+        MyApplication myApplication = new MyApplication(medicineController);
+        myApplication.start();
+    }
