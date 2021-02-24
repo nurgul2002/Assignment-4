@@ -1,0 +1,5 @@
+package data.interfaces;
+
+public abstract class IDatabase {
+        public abstract void getConnection();
+    }
