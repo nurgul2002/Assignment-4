@@ -7,46 +7,77 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+@Path("medicines")
 public class MedicineController {
-    private final IMedicineRrepository medicineRepository;
+    @Inject
+    private IMedicineRrepository iMedicineRrepository;
 
-    public MedicineController(IMedicineRrepository medicineRepository) {
-        this.medicineRepository = medicineRepository;
-    }
-
-    public String searchMedicineByName(String name) {
-        String result = medicineRepository.searchMedicineByName(name).toString();
-
-        return result;
-    }
-
-    public String getMedicineById(int id) {
-        String result = medicineRepository.getMedicineById(id).toString();
-
-        return result;
-    }
-
-    public String addMedicine(String name, double price, String manufacturer) {
-        LocalDate expirationDate = LocalDate.now();
-
-        boolean added;
-        if (medicineRepository.addMedicine(new Medicine(name, price, expirationDate, manufacturer))) added = true;
-        else added = false;
-
-        if (added) {
-            return "Medicine was added!";
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response AddMedicine(Medicine medicine) {
+        boolean created;
+        try {
+            created = iMedicineRrepository.AddMedicine(user);
+        } catch (ServerErrorException e) {
+            return Response.serverError().entity(ex.getMessage()).build();
         }
 
-        return "Medicine was not added!";
-    }
-
-    public String removeMedicineById(int id) {
-        boolean removed = medicineRepository.removeMedicineById(id);
-
-        if (removed) {
-            return "Medicine was removed!";
+        if (!created) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Medicine cannot be created!").build();
         }
 
-        return "Medicine was not removed!";
+        return Response.status(Response.Status.CREATED).entity("Medicine created successfully!").build();
     }
-}
+
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getMedicine(@PathParam("id") int id) {
+        Medicine medicine;
+        try {
+            medicines = iMedicineRrepository.getMedicine(id);
+        } catch (ServerErrorException e) {
+            return Response.status(500).entity(ex.getMessage()).build();
+        }
+
+        if (medicines == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Medicine does not exist!").build();
+        }
+
+        return Response.status(Response.Status.OK).entity(medicine).build();
+    }
+    @GET
+    @Path("/{name}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getMedicine(@PathParam("name") String name) {
+        ArrayList<Medicine> medicine;
+        try {
+            medicines = iMedicineRrepository.getMedicine(id);
+        } catch (ServerErrorException e) {
+            return Response.status(500).entity(ex.getMessage()).build();
+        }
+
+        if (medicines.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Medicines does not exist!").build();
+        }
+
+        return Response.status(Response.Status.OK).entity(medicines).build();
+    }
+    @DELETE
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteMedicine(@PathParam("id") int id) {
+        boolean deleted;
+        try {
+            deleted = iMedicineRrepository.getMedicine(id);
+        } catch (ServerErrorException e) {
+            return Response.status(500).entity(ex.getMessage()).build();
+        }
+
+        if (!deleted) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Medicine does not exist!").build();
+        }
+
+        return Response.status(Response.Status.OK).entity("Medicine was deleted successfully").build();
+    }    }
