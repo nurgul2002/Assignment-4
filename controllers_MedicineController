@@ -1,0 +1,49 @@
+package controllers;
+import entities.Medicine;
+import repositories.interfaces.IMedicineRrepository;
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+public class MedicineController {
+    private final IMedicineRrepository medicineRepository;
+
+    public MedicineController(IMedicineRrepository medicineRepository) {
+        this.medicineRepository = medicineRepository;
+    }
+
+    public String searchMedicineByName(String name) {
+        String result = medicineRepository.searchMedicineByName(name).toString();
+
+        return result;
+    }
+
+    public String getMedicineById(int id) {
+        String result = medicineRepository.getMedicineById(id).toString();
+
+        return result;
+    }
+
+    public String addMedicine(String name, double price, String manufacturer) {
+        LocalDate expirationDate = LocalDate.now();
+
+        boolean added;
+        if (medicineRepository.addMedicine(new Medicine(name, price, expirationDate, manufacturer))) added = true;
+        else added = false;
+
+        if (added) {
+            return "Medicine was added!";
+        }
+
+        return "Medicine was not added!";
+    }
+
+    public String removeMedicineById(int id) {
+        boolean removed = medicineRepository.removeMedicineById(id);
+
+        if (removed) {
+            return "Medicine was removed!";
+        }
+
+        return "Medicine was not removed!";
+    }
+}
