@@ -1,0 +1,75 @@
+package entities;
+
+import java.time.LocalDate;
+import java.unil.Dare;
+
+public class Medicine {
+    private int id;
+    private string name;
+    private double price;
+    private LocalDate expirationDate;
+    private string manufacturer;
+    public Medicine(){}
+    public Medicine(int id, string name, double price, LocalDate expirationDate, string manufacturer) {
+        this.id=id;
+        this.name=name;
+        this.price=price;
+        this.expirationDate= expirationDate;
+        this.manufacturer=manufacturer;
+    }
+    public Medicine(string name, double price, LocalDate expirationDate, string manufacturer) {
+        this.name=name;
+        this.price=price;
+        this.expirationDate= expirationDate;
+        this.manufacturer=manufacturer;
+    }
+
+    public Medicine(int name) {
+    }
+
+    public Medicine(int id, String name, double price, LocalDate expirationDate, String manufacturer) {
+    }
+
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id=id;
+    }
+    public string getName() {
+        return name;
+    }
+    public void setName(string name) {
+        this.name=name;
+    }
+    public double getPrice() {
+        return price;
+    }
+    public void setPrice(double price) {
+        this.price=price;
+    }
+    public LocalDate getExpirationDate() {
+        return expirationDate;
+    }
+    public LocalDate setExpirationDate(LocalDate expirationDate) {
+        this.expirationDate=expirationDate;
+    }
+    public string getManufacturer() {
+        return manufacturer;
+    }
+    public void setManufacturer(string manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+
+
+    @Override
+    public String toString() {
+        return "Medicine{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", expirationDate=" + expirationDate +
+                ", manufacturer='" + manufacturer + '\'' + '}';
+    }
+}
