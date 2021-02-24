@@ -1,5 +1,6 @@
 package data;
 import data.interfaces.IDatabase;
+import javax.ws.rs.ServerErrorException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 public class Database implements IDatabase {
